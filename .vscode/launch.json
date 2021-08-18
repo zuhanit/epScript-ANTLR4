@@ -5,7 +5,7 @@
         "request": "launch",
         "name": "Debug Current Grammar",
         "grammar": "epScriptParser.g4",
-        "input": "input.txt",
+        "input": ".\\test\\input.txt",
         "visualParseTree": true
     }
     ]
