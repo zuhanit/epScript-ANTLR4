@@ -1,0 +1,27 @@
+import player.loop as pLoop;
+import player.player;
+import quest.quest;
+import tools.CUnit;
+import tools.vision;
+import item.item;
+import tools.speaker;
+
+function onPluginStart() {
+    player.init();
+    item.init();
+    quest.init();
+    foreach(p : EUDLoopPlayer("Human")) {
+        player.respawn(p);
+    }
+}
+
+function afterTriggerExec() {
+    const oldCP = getcurpl();
+    foreach(p : EUDLoopPlayer("Human")) {
+        setcurpl(p);
+        pLoop.mainLoop();
+        vision.main();
+    }
+    setcurpl(oldCP);
+    //SetResources(P1, Add, 1, Ore);
+}

@@ -1,0 +1,12 @@
+{
+    "configurations": [
+    {
+        "type": "antlr-debug",
+        "request": "launch",
+        "name": "Debug Current Grammar",
+        "grammar": "epScriptParser.g4",
+        "input": "input.txt",
+        "visualParseTree": true
+    }
+    ]
+}
