@@ -18,6 +18,7 @@ statement
  | variableStatement
  | ifStatement
  | iterationStatement
+ | switchStatement
  | expressionStatement
  | onceStatement
  | continueStatement
@@ -143,11 +144,63 @@ objectElement
  ;
 
 objectVariableDeclaration
- : Var identifier SemiColon
+ : Var identifier typeAnnotation? SemiColon
  ;
 
+// Type Annotations
+
+typeAnnotation
+ : ':' type_
+ ;
+
+type_
+ : primaryType
+ | typeName
+ ;
+
+typeName
+ : identifier
+ | namespaceName
+ ;
+
+namespaceName
+ : identifierName ('.'+ identifierName)*
+ ;
+
+primaryType
+ : singleExpression arguments // It doesn't looks good... Need to replaced by any alternative.
+ | predefinedType
+ ;
+
+predefinedType
+ : encodedTypes
+ ;
+
+encodedTypes
+ : TrgAllyStatus
+ | TrgComparison
+ | TrgCount
+ | TrgModifier
+ | TrgOrder
+ | TrgPlayer
+ | TrgProperty
+ | TrgPropState
+ | TrgResource
+ | TrgScore
+ | TrgSwitchAction
+ | TrgSwitchState
+ | TrgAIScript
+ | TrgLocation
+ | TrgString
+ | TrgSwitch
+ | TrgUnit
+ | TrgTBL
+ ;
+
+// Function Declaration
+
 functionDeclaration
- : Function identifier '(' formalParameterList? ')' functionBody
+ : Function identifier '(' formalParameterList? ')' typeAnnotation? functionBody
  ;
 
 formalParameterList
@@ -156,7 +209,7 @@ formalParameterList
  ;
 
 formalParameterArg
- : assignAble ('=' singleExpression)?
+ : assignAble typeAnnotation?
  ;
 
 lastFormalParameterArg
@@ -200,6 +253,8 @@ argument
  : (singleExpression | Identifier)
  ;
 
+// Expressions
+
 singleExpression
  : singleExpression '[' expressionSequence ']'                  # MemberExpression
  | singleExpression '.' identifierName                          # MemberDotExpression
@@ -223,6 +278,7 @@ singleExpression
  | singleExpression '|' singleExpression                        # BitOrExpression
  | singleExpression '&&' singleExpression                       # LogicalAndExpression
  | singleExpression '||' singleExpression                       # LogicalOrExpression
+ | singleExpression '=' singleExpression                        # AssignExpression
  | This                                                         # ThisExpression
  | identifierName singleExpression?                             # IdentifierExpression
  | literal                                                      # LiteralExpression
