@@ -149,16 +149,36 @@ UnexpectedCharacter
 DoubleStringCharacter
  : ~["\\\r\n]
  | '\\' EscapeSequence 
+ | LineContinuation
  ;
 
 SingleStringCharacter
  : ~['\\\r\n]
  | '\\' EscapeSequence
+ | LineContinuation
+ ;
+
+fragment LineContinuation
+ : '\\' [\r\n\u2028\u2029]
  ;
 
 fragment EscapeSequence
- : UnicodeEscapeSequence
+ : CharacterEscapeSequence
+ | UnicodeEscapeSequence
  ;
+
+fragment CharacterEscapeSequence
+    : SingleEscapeCharacter
+    | NonEscapeCharacter
+    ;
+
+fragment SingleEscapeCharacter
+    : ['"\\bfnrtv]
+    ;
+
+fragment NonEscapeCharacter
+    : ~['"\\bfnrtv0-9xu\r\n]
+    ;
 
 fragment UnicodeEscapeSequence
  : 'x' HexDigit HexDigit

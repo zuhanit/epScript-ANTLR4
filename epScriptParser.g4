@@ -256,7 +256,8 @@ argument
 // Expressions
 
 singleExpression
- : singleExpression '[' expressionSequence ']'                  # MemberExpression
+ : anonymosuFunction                                            # AnonymousFunctionExpression
+ | singleExpression '[' expressionSequence ']'                  # MemberExpression
  | singleExpression '.' identifierName                          # MemberDotExpression
  | singleExpression arguments                                   # ArgumentExpression
  | singleExpression '?' singleExpression ':' singleExpression   # TernaryExpression
@@ -278,12 +279,17 @@ singleExpression
  | singleExpression '|' singleExpression                        # BitOrExpression
  | singleExpression '&&' singleExpression                       # LogicalAndExpression
  | singleExpression '||' singleExpression                       # LogicalOrExpression
- | singleExpression '=' singleExpression                        # AssignExpression
+ | singleExpression '=' singleExpression                        # AssignmentExpression
+ | singleExpression assignmentOperator singleExpression         # assignmentOperatorExpression
  | This                                                         # ThisExpression
  | identifierName singleExpression?                             # IdentifierExpression
  | literal                                                      # LiteralExpression
  | arrayLiteral                                                 # ArrayLiteralExpression
  | '(' expressionSequence ')'                                   # ParanthesizedExpression
+ ;
+
+anonymosuFunction
+ : Function '(' formalParameterList? ')' typeAnnotation? functionBody
  ;
 
 assignmentOperator
